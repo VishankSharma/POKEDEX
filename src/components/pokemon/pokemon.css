@@ -19,3 +19,8 @@
 .pokemon:hover{
     background-color:beige;
 }
+
+.Link {
+    text-decoration: none;
+    color: black;
+}

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import './pokemonDetils.css'
 
 function PokemonDetails() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ function PokemonDetails() {
 
   useEffect(() => {
     downloadPokemon();
-  }, []);
+  }, [id]);
 
   if (!pokemon) {
     return <div className="pokemon-details-wrapper">Loading...</div>;
@@ -28,7 +29,7 @@ function PokemonDetails() {
 
   return (
     <div className="pokemon-details-wrapper">
-      <div className="pokemon-detail-name">Name: {pokemon.name}</div>
+      <div className="pokemon-detail-name"> {pokemon.name}</div>
       <img className="pokemon-details-image" src={pokemon.image} alt={pokemon.name} />
       <div>Height: {pokemon.height}</div>
       <div>Weight: {pokemon.weight}</div>
