@@ -14,7 +14,7 @@ function PokemonList(){
       });
 
     async function downloadPokemons() { 
-    setPokemonListState({...pokemonListState, isLoading:true});
+    setPokemonListState((state)=>({...state, isLoading:true}));
 
     const response = await axios.get(pokemonListState.pokedexUrl);
     const pokemonResults = response.data.results;
@@ -38,11 +38,11 @@ function PokemonList(){
           };
         })
       
-    setPokemonListState({...pokemonListState,
+    setPokemonListState((state)=>({...state,
       pokemonList:res,
       isLoading:false,
       nextUrl:response.data.next,
-      prevUrl:response.data.previous})
+      prevUrl:response.data.previous}))
     }
 
     useEffect( ()=>{
