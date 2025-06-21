@@ -13,10 +13,10 @@ function PokemonList(){
 
       });
 
-    async function downloadPokemons() { 
+    async function downloadPokemons(url) { 
     setPokemonListState((state)=>({...state, isLoading:true}));
 
-    const response = await axios.get(pokemonListState.pokedexUrl);
+    const response = await axios.get(url);
     const pokemonResults = response.data.results;
     
     console.log(response.data)
@@ -46,7 +46,7 @@ function PokemonList(){
     }
 
     useEffect( ()=>{
-      downloadPokemons()
+      downloadPokemons(pokemonListState.pokedexUrl)
     },[pokemonListState.pokedexUrl])
 
     return (
