@@ -1,27 +1,11 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import './pokemonDetils.css'
+import "./pokemonDetails.css";
+import usePokemonDetails from "../../hooks/usePokemonDetails";
 
 function PokemonDetails() {
   const { id } = useParams();
-
-  const [pokemon, setPokemon] = useState(null);
-
-  async function downloadPokemon() {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    setPokemon({
-      name: response.data.name,
-      image: response.data.sprites.front_default,
-      types: response.data.types.map((t) => t.type.name),
-      height: response.data.height,
-      weight: response.data.weight,
-    });
-  }
-
-  useEffect(() => {
-    downloadPokemon();
-  }, [id]);
+  const [pokemon] = usePokemonDetails(id);
 
   if (!pokemon) {
     return <div className="pokemon-details-wrapper">Loading...</div>;
@@ -29,8 +13,12 @@ function PokemonDetails() {
 
   return (
     <div className="pokemon-details-wrapper">
-      <div className="pokemon-detail-name"> {pokemon.name}</div>
-      <img className="pokemon-details-image" src={pokemon.image} alt={pokemon.name} />
+      <div className="pokemon-detail-name">{pokemon.name}</div>
+      <img
+        className="pokemon-details-image"
+        src={pokemon.image}
+        alt={pokemon.name}
+      />
       <div>Height: {pokemon.height}</div>
       <div>Weight: {pokemon.weight}</div>
       <div className="pokemon-details-types">
@@ -38,6 +26,24 @@ function PokemonDetails() {
           <div key={t}>Type: {t}</div>
         ))}
       </div>
+
+      {pokemon.types && (
+        <div>
+          MORE {pokemon.types[0]} TYPE POKEMON
+          <ul>
+            {pokemon.firstFive
+              .filter((p) => p.pokemon.name !== pokemon.name)
+              .map((p) => {
+                const pokeId = p.pokemon.url.split("/").filter(Boolean).pop();
+                return (
+                  <li key={p.pokemon.url}>
+                    <Link to={`/pokemon/${pokeId}`}>{p.pokemon.name}</Link>
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
